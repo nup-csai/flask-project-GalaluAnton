@@ -18,3 +18,12 @@ tasks = [
         {"deadline": "14.11.2024"}
     }
 ]
+
+
+def get_tasks_by_id(_id):
+    for task in tasks:
+        if task["id"] == _id:
+            return task
+
+def get_all_tasks():
+    return tasks
