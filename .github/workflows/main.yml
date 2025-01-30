@@ -1,0 +1,30 @@
+name: CI - Flask Tests
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Клонируем репозиторий
+        uses: actions/checkout@v3
+
+      - name: Устанавливаем Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Устанавливаем зависимости
+        run: |
+          pip install -r requirements.txt
+
+      - name: Запускаем тесты
+        run: |
+          pytest tests/
