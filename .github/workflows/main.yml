@@ -24,6 +24,7 @@ jobs:
       - name: Устанавливаем зависимости
         run: |
           pip install -r requirements.txt
+          echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV  # Добавляем PYTHONPATH
 
       - name: Запускаем тесты
         run: |
