@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Таск-менеджер</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h1 class="text-center">Таск-менеджер</h1>
+
+    <div class="row">
+        <!-- Левая колонка: список задач -->
+        <div class="col-md-6">
+            <h2>Список задач (по дедлайну)</h2>
+            <ul class="list-group">
+                {% for task in tasks %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ task.description }}</strong> – Дедлайн: {{ task.deadline }}
+                        </div>
+                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-danger btn-sm">Удалить</button>
+                        </form>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Правая колонка: дерево задач -->
+        <div class="col-md-6">
+            <h2>Дерево задач</h2>
+            <ul>
+                {% for task in tasks %}
+                    {% if not task.parent_id %}
+                        {{ render_task_tree(task) | safe }}
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Добавить задачу</h2>
+    <form action="{{ url_for('add_task') }}" method="post" class="mb-4">
+        <input type="text" name="description" placeholder="Описание" required class="form-control mb-2">
+        <input type="datetime-local" name="deadline" required class="form-control mb-2">
+        <select name="parent_id" class="form-control mb-2">
+            <option value="">Нет родительской задачи</option>
+            {% for task in tasks %}
+                <option value="{{ task.id }}">{{ task.description }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-success">Добавить</button>
+    </form>
+</body>
+</html>
